@@ -28,7 +28,7 @@ namespace ConsoleMenu.Tests
             var result = await executor.ExecuteAsync(option);
 
             // Assert
-            Assert.Equal(MenuExecutionResult.Continue, result);
+            Assert.Equal(ConsoleMenuExecutionResult.Continue, result);
         }
     }
 }

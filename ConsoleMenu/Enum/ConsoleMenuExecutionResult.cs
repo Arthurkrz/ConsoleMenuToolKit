@@ -4,7 +4,7 @@
     /// Represents the result of a menu option, indicating 
     /// whether to continue displaying the menu or exit it.
     /// </summary>
-    public enum MenuExecutionResult
+    public enum ConsoleMenuExecutionResult
     {
         /// <summary>
         /// Indicates that the menu loop should continue, 

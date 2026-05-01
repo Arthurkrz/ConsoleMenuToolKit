@@ -22,7 +22,7 @@ namespace ConsoleMenu.Tests
 
             // Assert
             Assert.True(called);
-            Assert.Equal(MenuExecutionResult.Continue, result);
+            Assert.Equal(ConsoleMenuExecutionResult.Continue, result);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace ConsoleMenu.Tests
 
             // Assert
             Assert.True(called);
-            Assert.Equal(MenuExecutionResult.Continue, result);
+            Assert.Equal(ConsoleMenuExecutionResult.Continue, result);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace ConsoleMenu.Tests
 
             // Assert
             Assert.True(handler.IsExecuted);
-            Assert.Equal(MenuExecutionResult.Continue, result);
+            Assert.Equal(ConsoleMenuExecutionResult.Continue, result);
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace ConsoleMenu.Tests
             var result = await _sut.ExecuteAsync(option);
 
             // Assert
-            Assert.Equal(MenuExecutionResult.Exit, result);
+            Assert.Equal(ConsoleMenuExecutionResult.Exit, result);
         }
 
         [Fact]

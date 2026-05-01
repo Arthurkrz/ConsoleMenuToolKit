@@ -23,6 +23,6 @@ namespace ConsoleMenu.Contracts
         /// </summary>
         /// <param name="option"></param>
         /// <returns></returns>
-        Task<MenuExecutionResult> ExecuteAsync(ConsoleMenuOption option);
+        Task<ConsoleMenuExecutionResult> ExecuteAsync(ConsoleMenuOption option);
     }
 }

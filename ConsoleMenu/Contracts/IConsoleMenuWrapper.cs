@@ -17,6 +17,8 @@
         /// </summary>
         void Clear();
 
+        string ReadLine();
+
         /// <summary>
         /// Writes a message prompting the user to press any key to continue, and waits for a key press.
         /// </summary>

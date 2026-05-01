@@ -16,12 +16,15 @@ namespace ConsoleMenu.Application
         private readonly IConsoleMenuSelector _selector;
         private readonly IConsoleMenuExecutor _executor;
 
+        private ConsoleMenuSelectionType _selectionType =
+            ConsoleMenuSelectionType.ReadAfterConfirm;
+
         /// <summary>
         /// Default constructor for ConsoleMenuSetup that allows for quick 
         /// setup of a console menu with default behavior. It initializes 
         /// the menu selector and executor with default implementations that use a console wrapper.
         /// </summary>
-        public ConsoleMenuSetup() 
+        public ConsoleMenuSetup(ConsoleMenuSelectionType selectionType = ConsoleMenuSelectionType.ReadAfterConfirm) 
             : this(new ConsoleMenuSelector(new ConsoleMenuWrapper()), 
                    new ConsoleMenuExecutor([], new ConsoleMenuWrapper())) { }
 
@@ -38,6 +41,12 @@ namespace ConsoleMenu.Application
         {
             _selector = selector;
             _executor = executor;
+        }
+
+        public ConsoleMenuSetup UseSelectionType(ConsoleMenuSelectionType selectionType)
+        {
+            _selectionType = selectionType;
+            return this;
         }
 
         /// <summary>
@@ -126,10 +135,10 @@ namespace ConsoleMenu.Application
         {
             while (true)
             {
-                var selectedOption = _selector.ObtainOption(_options);
+                var selectedOption = _selector.ObtainOption(_options, _selectionType);
                 var result = await _executor.ExecuteAsync(selectedOption);
 
-                if (result == MenuExecutionResult.Exit) break;
+                if (result == ConsoleMenuExecutionResult.Exit) break;
             }
         }
     }

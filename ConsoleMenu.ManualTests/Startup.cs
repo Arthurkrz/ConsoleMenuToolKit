@@ -1,5 +1,6 @@
 ﻿using ConsoleMenu.Application;
 using ConsoleMenu.Contracts;
+using ConsoleMenu.Enum;
 using ConsoleMenu.ManualTests.Contracts.Service;
 using ConsoleMenu.ManualTests.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,8 @@ namespace ConsoleMenu.ManualTests
 
             var menu = new ConsoleMenuSetup();
 
+            menu.UseSelectionType(ConsoleMenuSelectionType.ReadAfterConfirm);
+
             menu.AddOption(1, "Create order", () => orderService.CreateOrderAsync())
                 .AddOption(2, "Generate daily report", () => reportService.GenerateDailyReportAsync())
                 .AddExitOption(3, "Exit");
@@ -41,6 +44,8 @@ namespace ConsoleMenu.ManualTests
         public async Task ExecuteWithHandlers()
         {
             var menu = new ConsoleMenuSetup(_consoleMenuSelector, _consoleMenuExecutor);
+
+            menu.UseSelectionType(ConsoleMenuSelectionType.ReadAfterConfirm);
 
             menu.AddHandlerOption(1, "Create order", "create-order")
                 .AddHandlerOption(2, "Generate daily report", "generate-daily-report")

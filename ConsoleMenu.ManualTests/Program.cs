@@ -11,5 +11,5 @@ services.AddConsoleMenu();
 
 var startup = new Startup(services.BuildServiceProvider());
 
-// await startup.ExecuteWithoutHandlers();
-// await startup.ExecuteWithHandlers();
+ //await startup.ExecuteWithoutHandlers();
+ await startup.ExecuteWithHandlers();

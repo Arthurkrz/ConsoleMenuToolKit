@@ -49,7 +49,7 @@ namespace ConsoleMenu.Application
         /// <param name="option"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public async Task<MenuExecutionResult> ExecuteAsync(ConsoleMenuOption option)
+        public async Task<ConsoleMenuExecutionResult> ExecuteAsync(ConsoleMenuOption option)
         {
             ArgumentNullException.ThrowIfNull(option);
 
@@ -62,7 +62,7 @@ namespace ConsoleMenu.Application
                     await option.AsyncAction();
                     _console.ContinueAfterInput();
                     _console.Clear();
-                    return MenuExecutionResult.Continue;
+                    return ConsoleMenuExecutionResult.Continue;
 
                 case ConsoleMenuOptionKind.Handler:
                     if (string.IsNullOrWhiteSpace(option.HandlerKey))
@@ -74,10 +74,10 @@ namespace ConsoleMenu.Application
                     await handler.ExecuteAsync();
                     _console.ContinueAfterInput();
                     _console.Clear();
-                    return MenuExecutionResult.Continue;
+                    return ConsoleMenuExecutionResult.Continue;
 
                 case ConsoleMenuOptionKind.Exit:
-                    return MenuExecutionResult.Exit;
+                    return ConsoleMenuExecutionResult.Exit;
 
                 default:
                     throw new InvalidOperationException(

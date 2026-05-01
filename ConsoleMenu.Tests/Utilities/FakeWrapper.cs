@@ -7,6 +7,7 @@ namespace ConsoleMenu.Tests.Utilities
         public bool SkipPause { get; set; } = true;
 
         private readonly Queue<ConsoleKeyInfo> _keys = new();
+        private readonly Queue<string> _lines = new();
 
         public List<string> WrittenLines { get; } = new();
         public List<(string Message, ConsoleColor Color)> ColoredLines { get; } = new();
@@ -23,7 +24,23 @@ namespace ConsoleMenu.Tests.Utilities
 
         public void EnqueueKey(char key) => _keys.Enqueue(new ConsoleKeyInfo(key, (ConsoleKey)char.ToUpperInvariant(key), false, false, false));
 
-        public ConsoleKeyInfo ReadKey() => _keys.Dequeue();
+        public void EnqueueLine(string input) => _lines.Enqueue(input);
+
+        public ConsoleKeyInfo ReadKey()
+        {
+            if (_keys.Count == 0)
+                throw new InvalidOperationException("No input provided");
+
+            return _keys.Dequeue();
+        }
+
+        public string ReadLine()
+        {
+            if (_lines.Count == 0)
+                throw new InvalidOperationException("No input provided.");
+
+            return _lines.Dequeue();
+        }
 
         public void WriteLine(string value = null!) => WrittenLines.Add(value ?? string.Empty);
 

@@ -1,5 +1,6 @@
 ﻿using ConsoleMenu.Application;
 using ConsoleMenu.Contracts;
+using ConsoleMenu.Enum;
 
 namespace ConsoleMenu.Tests.Utilities
 {
@@ -12,6 +13,9 @@ namespace ConsoleMenu.Tests.Utilities
             _options = new Queue<ConsoleMenuOption>(options);
         }
 
-        public ConsoleMenuOption ObtainOption(IEnumerable<ConsoleMenuOption> options) => _options.Dequeue();
+        public ConsoleMenuOption ObtainOption(
+            IEnumerable<ConsoleMenuOption> options, 
+            ConsoleMenuSelectionType selectionType) => 
+            _options.Dequeue();
     }
 }

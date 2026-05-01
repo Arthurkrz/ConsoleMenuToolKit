@@ -1,4 +1,5 @@
 ﻿using ConsoleMenu.Application;
+using ConsoleMenu.Enum;
 
 namespace ConsoleMenu.Contracts
 {
@@ -18,6 +19,6 @@ namespace ConsoleMenu.Contracts
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        ConsoleMenuOption ObtainOption(IEnumerable<ConsoleMenuOption> options);
+        ConsoleMenuOption ObtainOption(IEnumerable<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType);
     }
 }

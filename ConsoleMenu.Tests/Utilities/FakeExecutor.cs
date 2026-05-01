@@ -8,14 +8,14 @@ namespace ConsoleMenu.Tests.Utilities
     {
         public int ExecutionCount { get; private set; }
 
-        public Task<MenuExecutionResult> ExecuteAsync(ConsoleMenuOption option)
+        public Task<ConsoleMenuExecutionResult> ExecuteAsync(ConsoleMenuOption option)
         {
             ExecutionCount++;
 
             var result = option.Kind == 
                 ConsoleMenuOptionKind.Exit ?
-                MenuExecutionResult.Exit :
-                MenuExecutionResult.Continue;
+                ConsoleMenuExecutionResult.Exit :
+                ConsoleMenuExecutionResult.Continue;
 
             return Task.FromResult(result);
         }

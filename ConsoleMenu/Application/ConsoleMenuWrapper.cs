@@ -22,6 +22,8 @@ namespace ConsoleMenu.Application
         /// </summary>
         public void Clear() => Console.Clear();
 
+        public string ReadLine() => Console.ReadLine() ?? string.Empty;
+
         /// <summary>
         /// Writes a message prompting the user to 
         /// press any key to continue, and waits for a key press.
