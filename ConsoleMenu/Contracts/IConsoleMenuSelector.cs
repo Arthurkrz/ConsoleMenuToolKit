@@ -19,6 +19,6 @@ namespace ConsoleMenu.Contracts
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        ConsoleMenuOption ObtainOption(IEnumerable<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType);
+        ConsoleMenuOption ObtainOption(List<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType);
     }
 }

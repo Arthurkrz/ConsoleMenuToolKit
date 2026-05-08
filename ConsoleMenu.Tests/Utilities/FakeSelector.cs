@@ -14,7 +14,7 @@ namespace ConsoleMenu.Tests.Utilities
         }
 
         public ConsoleMenuOption ObtainOption(
-            IEnumerable<ConsoleMenuOption> options, 
+            List<ConsoleMenuOption> options, 
             ConsoleMenuSelectionType selectionType) => 
             _options.Dequeue();
     }

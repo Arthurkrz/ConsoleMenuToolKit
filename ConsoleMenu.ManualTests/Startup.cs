@@ -45,7 +45,7 @@ namespace ConsoleMenu.ManualTests
         {
             var menu = new ConsoleMenuSetup(_consoleMenuSelector, _consoleMenuExecutor);
 
-            menu.UseSelectionType(ConsoleMenuSelectionType.ReadAfterConfirm);
+            menu.UseSelectionType(ConsoleMenuSelectionType.ArrowSelection);
 
             menu.AddHandlerOption(1, "Create order", "create-order")
                 .AddHandlerOption(2, "Generate daily report", "generate-daily-report")

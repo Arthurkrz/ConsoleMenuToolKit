@@ -20,7 +20,7 @@ namespace ConsoleMenu.Tests
             // Arrange
             _console.EnqueueKey('2');
 
-            var options = new[]
+            var options = new List<ConsoleMenuOption>
             {
                 ConsoleMenuOption.Create(1, "Option 1", () => { }),
                 ConsoleMenuOption.Create(2, "Option 2", () => { })
@@ -61,7 +61,7 @@ namespace ConsoleMenu.Tests
             _console.EnqueueKey('9');
             _console.EnqueueKey('1');
 
-            var options = new[]
+            var options = new List<ConsoleMenuOption>
                 { ConsoleMenuOption.Create(1, "Option 1", () => { }) };
 
             // Act
@@ -81,7 +81,7 @@ namespace ConsoleMenu.Tests
             _console.EnqueueLine("abc");
             _console.EnqueueLine("1");
 
-            var options = new[]
+            var options = new List<ConsoleMenuOption>
                 { ConsoleMenuOption.Create(1, "Option 1", () => {}) };
 
             // Act
@@ -99,14 +99,14 @@ namespace ConsoleMenu.Tests
         {
             // Act & Assert
             Assert.Throws<InvalidOperationException>(() => 
-                _sut.ObtainOption(Array.Empty<ConsoleMenuOption>(), ConsoleMenuSelectionType.InstantRead));
+                _sut.ObtainOption(new List<ConsoleMenuOption>(), ConsoleMenuSelectionType.InstantRead));
         }
 
         [Fact]
         public void ObtainOption_ShouldThrowException_WhenDuplicateIds()
         {
             // Arrange
-            var options = new[]
+            var options = new List<ConsoleMenuOption>
             {
                 ConsoleMenuOption.Create(1, "Option 1", () => { }),
                 ConsoleMenuOption.Create(1, "Option 2", () => { })
