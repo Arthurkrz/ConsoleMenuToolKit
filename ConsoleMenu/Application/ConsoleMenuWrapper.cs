@@ -8,6 +8,8 @@ namespace ConsoleMenu.Application
     /// </summary>
     public class ConsoleMenuWrapper : IConsoleMenuWrapper
     {
+        public int CursorTop => Console.CursorTop;
+
         /// <summary>
         /// Reads a key press from the console and 
         /// returns the corresponding ConsoleKeyInfo.
@@ -52,5 +54,15 @@ namespace ConsoleMenu.Application
             Console.WriteLine(value);
             Console.ResetColor();
         }
+
+        public void ClearCurrentLine()
+        {
+            SetCursorPosition(0, CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            SetCursorPosition(0, CursorTop);
+        }
+
+        public void SetCursorPosition(int left, int top) =>
+            Console.SetCursorPosition(left, top);
     }
 }

@@ -5,6 +5,12 @@
     /// </summary>
     public interface IConsoleMenuWrapper
     {
+        int CursorTop { get; }
+
+        void ClearCurrentLine();
+
+        void SetCursorPosition(int left, int top);
+
         /// <summary>
         /// Reads a key press from the console and returns the corresponding ConsoleKeyInfo.
         /// </summary>

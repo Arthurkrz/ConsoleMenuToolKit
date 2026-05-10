@@ -78,7 +78,7 @@ namespace ConsoleMenu.Application
 
         private string AskAndReadOption(ConsoleMenuSelectionType selectionType, List<ConsoleMenuOption> options)
         {
-            _console.WriteLine("\nSelect an option:");
+            _console.WriteLine("Select an option:");
 
             return selectionType switch
             {
@@ -99,7 +99,9 @@ namespace ConsoleMenu.Application
 
                 for (int i = 0; i < options.Count; i++)
                 {
-                    var prefix = i == selectedIndex ? ">>> " : "   ";
+                    _console.ClearCurrentLine();
+
+                    var prefix = i == selectedIndex ? ">> " : "   ";
                     _console.WriteLine($"{prefix}{options[i].Id} - {options[i].Value}");
                 }
 
@@ -135,11 +137,13 @@ namespace ConsoleMenu.Application
         private string ReadByArrowSelection(List<ConsoleMenuOption> options)
         {
             var selectedIndex = 0;
+            var menuTop = _console.CursorTop;
 
             while (true)
             {
-                _console.Clear();
+                _console.SetCursorPosition(0, menuTop);
                 ShowOptions(options, ConsoleMenuSelectionType.ArrowSelection, selectedIndex);
+
                 var key = _console.ReadKey();
 
                 switch (key.Key)
