@@ -13,7 +13,7 @@ namespace ConsoleMenu.ManualTests.Services
 
         public async Task CreateOrderAsync()
         {
-            _inventoryService.ReserveItems();
+            await _inventoryService.ReserveItemsAsync();
             Console.WriteLine("Order successfully created.");
         }
     }

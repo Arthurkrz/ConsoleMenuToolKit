@@ -76,6 +76,19 @@ namespace ConsoleMenu.Application
                     _console.Clear();
                     return ConsoleMenuExecutionResult.Continue;
 
+                case ConsoleMenuOptionKind.SubMenu:
+                    if (option.SubMenu is null)
+                        throw new InvalidOperationException($"Option '{option.Value}' has no submenu configured.");
+
+                    var result = await option.SubMenu.RunInternalAsync();
+
+                    return result == ConsoleMenuExecutionResult.Exit 
+                        ? ConsoleMenuExecutionResult.Exit 
+                        : ConsoleMenuExecutionResult.Continue;
+
+                case ConsoleMenuOptionKind.Return:
+                    return ConsoleMenuExecutionResult.Return;
+
                 case ConsoleMenuOptionKind.Exit:
                     return ConsoleMenuExecutionResult.Exit;
 

@@ -11,7 +11,9 @@ namespace ConsoleMenu.ManualTests.IOC
         public static IServiceCollection InjectServices(this IServiceCollection services)
         {
             services.AddSingleton<IAuditService, AuditService>();
+            services.AddSingleton<ISpecialInventoryService, SpecialInventoryService>();
             services.AddSingleton<IInventoryService, InventoryService>();
+            services.AddSingleton<ISpecialOrderService, SpecialOrderService>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IReportService, ReportService>();
             return services;

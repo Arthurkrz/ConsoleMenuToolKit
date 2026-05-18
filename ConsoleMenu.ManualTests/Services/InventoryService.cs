@@ -4,6 +4,10 @@ namespace ConsoleMenu.ManualTests.Services
 {
     public class InventoryService : IInventoryService
     {
-        public void ReserveItems() => Console.WriteLine("Inventory checked and items reserved.");
+        public async Task ReserveItemsAsync()
+        {
+            await Task.Delay(1);
+            Console.WriteLine("Inventory checked and items reserved.");
+        }
     }
 }

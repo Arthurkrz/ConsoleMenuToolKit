@@ -13,11 +13,13 @@
         /// </summary>
         Continue = 1,
 
+        Return = 2,
+
         /// <summary>
         /// Indicates that the menu should be exited, 
         /// terminating the menu loop with the application 
         /// proceeding to any subsequent code after the menu execution.
         /// </summary>
-        Exit = 2
+        Exit = 3
     }
 }

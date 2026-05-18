@@ -26,7 +26,7 @@ namespace ConsoleMenu.Application
         /// </summary>
         public ConsoleMenuSetup(ConsoleMenuSelectionType selectionType = ConsoleMenuSelectionType.ReadAfterConfirm) 
             : this(new ConsoleMenuSelector(new ConsoleMenuWrapper()), 
-                   new ConsoleMenuExecutor([], new ConsoleMenuWrapper())) { }
+                   new ConsoleMenuExecutor([], new ConsoleMenuWrapper())) { _selectionType = selectionType; }
 
         /// <summary>
         /// Constructor for ConsoleMenuSetup that allows for dependency injection 
@@ -104,6 +104,18 @@ namespace ConsoleMenu.Application
             return this;
         }
 
+        public ConsoleMenuSetup AddSubMenuOption(int id, string value, ConsoleMenuSetup subMenu)
+        {
+            _options.Add(ConsoleMenuOption.CreateSubMenu(id, value, subMenu));
+            return this;
+        }
+
+        public ConsoleMenuSetup AddReturnOption(int id, string value)
+        {
+            _options.Add(ConsoleMenuOption.CreateReturn(id, value));
+            return this;
+        }
+
         /// <summary>
         /// Adds an exit option to the console menu. This method is used to add an option 
         /// that, when selected, will signal the menu to exit. The option is added to the 
@@ -118,6 +130,19 @@ namespace ConsoleMenu.Application
             _options.Add(ConsoleMenuOption.CreateExit(id, value));
             return this;
         }
+        
+        internal async Task<ConsoleMenuExecutionResult> RunInternalAsync()
+        {
+            while (true)
+            {
+                var selectedOption = _selector.ObtainOption(_options, _selectionType);
+                var result = await _executor.ExecuteAsync(selectedOption);
+
+                return result == ConsoleMenuExecutionResult.Return 
+                    ? ConsoleMenuExecutionResult.Continue 
+                    : result;
+            }
+        }
 
         /// <summary>
         /// Runs the console menu. This method enters a loop where it continuously prompts 
@@ -131,15 +156,6 @@ namespace ConsoleMenu.Application
         /// The method works asynchronously by default, although its name does 
         /// not include "Async" for simplicity in usage.
         /// </summary>
-        public async Task Run()
-        {
-            while (true)
-            {
-                var selectedOption = _selector.ObtainOption(_options, _selectionType);
-                var result = await _executor.ExecuteAsync(selectedOption);
-
-                if (result == ConsoleMenuExecutionResult.Exit) break;
-            }
-        }
+        public async Task Run() => await RunInternalAsync();
     }
 }

@@ -43,17 +43,14 @@ namespace ConsoleMenu.Application
         /// <exception cref="InvalidOperationException"></exception>
         public ConsoleMenuOption ObtainOption(List<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType)
         {
-            var optionList = options?.ToList() ?? throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNullOrEmpty(nameof(options), "No options provided.");
 
-            if (!optionList.Any())
-                throw new InvalidOperationException("No options provided.");
-
-            ValidateDuplicateIds(optionList);
+            ValidateDuplicateIds(options);
 
             while (true)
             {
                 var response = AskAndReadOption(selectionType, options);
-                var selectedOption = MapToConsoleInputOption(response, optionList);
+                var selectedOption = MapToConsoleInputOption(response, options);
 
                 if (selectedOption is not null)
                 {
@@ -64,7 +61,7 @@ namespace ConsoleMenu.Application
 
                 _console.Clear();
                 _console.WriteLineColored($"\"{response}\" is not a valid option.\n", ConsoleColor.Red);
-                ShowOptions(optionList, selectionType);
+                ShowOptions(options, selectionType);
             }
         }
 

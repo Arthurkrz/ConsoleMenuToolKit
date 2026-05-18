@@ -13,7 +13,7 @@ namespace ConsoleMenu.ManualTests.Services
 
         public async Task GenerateDailyReportAsync()
         {
-            _auditService.Register("Daily report requested.");
+            await _auditService.RegisterAsync("Daily report requested.");
             Console.WriteLine("Daily report generated.");
         }
     }

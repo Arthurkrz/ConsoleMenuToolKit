@@ -2,6 +2,6 @@
 {
     public interface IAuditService
     {
-        void Register(string message);
+        Task RegisterAsync(string message);
     }
 }

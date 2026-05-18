@@ -4,6 +4,10 @@ namespace ConsoleMenu.ManualTests.Services
 {
     public class AuditService : IAuditService
     {
-        public void Register(string message) => Console.WriteLine($"Audit log: {message}");
+        public async Task RegisterAsync(string message)
+        {
+            await Task.Delay(1);
+            Console.WriteLine($"Audit log: {message}");
+        }
     }
 }

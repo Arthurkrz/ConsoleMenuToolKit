@@ -18,10 +18,14 @@
         /// </summary>
         Handler = 2,
 
+        SubMenu = 3,
+
+        Return = 4,
+
         /// <summary>
         /// Console menu option that signals the menu 
         /// to exit when selected, terminating the menu loop.
         /// </summary>
-        Exit = 3
+        Exit = 5
     }
 }

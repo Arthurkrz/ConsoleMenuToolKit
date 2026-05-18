@@ -2,6 +2,6 @@
 {
     public interface IInventoryService
     {
-        void ReserveItems();
+        Task ReserveItemsAsync();
     }
 }
