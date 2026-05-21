@@ -3,5 +3,7 @@
     public interface IReportService
     {
         Task GenerateDailyReportAsync();
+
+        Task GenerateReportForAllSpecialItemsAsync();
     }
 }

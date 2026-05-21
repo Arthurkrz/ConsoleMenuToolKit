@@ -16,5 +16,11 @@ namespace ConsoleMenu.ManualTests.Services
             await _auditService.RegisterAsync("Daily report requested.");
             Console.WriteLine("Daily report generated.");
         }
+
+        public async Task GenerateReportForAllSpecialItemsAsync()
+        {
+            await _auditService.RegisterAsync("Report for all special items requested.");
+            Console.WriteLine("Report for all special items generated.");
+        }
     }
 }

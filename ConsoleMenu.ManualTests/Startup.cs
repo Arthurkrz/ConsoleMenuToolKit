@@ -41,18 +41,33 @@ namespace ConsoleMenu.ManualTests
             subMenuAllItems.UseSelectionType(ConsoleMenuSelectionType.ArrowSelection);
             subMenuSpecificItems.UseSelectionType(ConsoleMenuSelectionType.ArrowSelection);
 
-            subMenuSpecificItems.AddOption(1, "Special Item 1", () => specialOrderService.CreateOrderSpecificProductAsync("Special Item 1"))
-                                .AddOption(2, "Special Item 2", () => specialOrderService.CreateOrderSpecificProductAsync("Special Item 2"))
-                                .AddReturnOption(3, "Back to main menu");
+            subMenuSpecificItems
+                .AddOption(1, "Special Item 1", () => 
+                    specialOrderService.CreateOrderSpecificProductAsync("Special Item 1"))
 
-            subMenuAllItems.AddOption(1, "Generate report for all special items", () => reportService.GenerateReportForAllSpecialItemsAsync())
-                           .AddSubMenuOption(2, "Generate report for specific special items", subMenuSpecificItems)
-                           .AddReturnOption(3, "Back to main menu");
+                .AddOption(2, "Special Item 2", () => 
+                    specialOrderService.CreateOrderSpecificProductAsync("Special Item 2"))
 
-            mainMenu.AddOption(1, "Create order", () => orderService.CreateOrderAsync())
-                    .AddOption(2, "Generate daily report", () => reportService.GenerateDailyReportAsync())
-                    .AddSubMenuOption(3, "Generate daily reports for special items", subMenuAllItems)
-                    .AddExitOption(3, "Exit");
+                .AddReturnOption(3, "Back to main menu");
+
+            subMenuAllItems
+                .AddOption(1, "Generate report for all special items", () => 
+                    reportService.GenerateReportForAllSpecialItemsAsync())
+
+                .AddSubMenuOption(2, "Generate report for specific special items", subMenuSpecificItems)
+
+                .AddReturnOption(3, "Back to main menu");
+
+            mainMenu
+                .AddOption(1, "Create order", () => 
+                    orderService.CreateOrderAsync())
+
+                .AddOption(2, "Generate daily report", () => 
+                    reportService.GenerateDailyReportAsync())
+
+                .AddSubMenuOption(3, "Generate daily reports for special items", subMenuAllItems)
+
+                .AddExitOption(4, "Exit");
 
             await mainMenu.Run();
         }
