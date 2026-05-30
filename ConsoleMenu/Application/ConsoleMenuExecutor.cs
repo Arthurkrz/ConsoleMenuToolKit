@@ -80,14 +80,21 @@ namespace ConsoleMenu.Application
                     if (option.SubMenu is null)
                         throw new InvalidOperationException($"Option '{option.Value}' has no submenu configured.");
 
-                    var result = await option.SubMenu.RunInternalAsync();
+                    var subMenuResult = await option.SubMenu.RunInternalAsync();
 
-                    return result == ConsoleMenuExecutionResult.Exit 
-                        ? ConsoleMenuExecutionResult.Exit 
-                        : ConsoleMenuExecutionResult.Continue;
+                    if (subMenuResult == ConsoleMenuExecutionResult.ReturnToMain)
+                        return ConsoleMenuExecutionResult.ReturnToMain;
+
+                    if (subMenuResult == ConsoleMenuExecutionResult.Exit)
+                        return ConsoleMenuExecutionResult.Exit;
+
+                    return ConsoleMenuExecutionResult.Continue;
 
                 case ConsoleMenuOptionKind.Return:
                     return ConsoleMenuExecutionResult.Return;
+
+                case ConsoleMenuOptionKind.ReturnToMain:
+                    return ConsoleMenuExecutionResult.ReturnToMain;
 
                 case ConsoleMenuOptionKind.Exit:
                     return ConsoleMenuExecutionResult.Exit;
@@ -106,7 +113,7 @@ namespace ConsoleMenu.Application
                 .Select(g => g.Key)
                 .ToList();
 
-            if (duplicateKeys.Any())
+            if (duplicateKeys.Count != 0)
                 throw new InvalidOperationException($"Duplicate handler keys found: {string.Join(", ", duplicateKeys)}");
         }
     }

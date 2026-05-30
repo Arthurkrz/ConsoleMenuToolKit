@@ -18,16 +18,20 @@ while (true)
                       "\n2 - Test with handlers." +
                       "\n0 - Exit.");
 
-    if (int.TryParse(Console.ReadLine(), out var option) && option != 0)
-        await (option == 1 ?
-            startup.ExecuteWithoutHandlersAsync() :
-            startup.ExecuteWithHandlersAsync());
+    if (int.TryParse(Console.ReadLine(), out var option) 
+        && option > 0 && option <= 2)
+    {
+        Console.Clear();
+
+        if (option == 1) startup.ExecuteWithoutHandlers();
+        else await startup.ExecuteWithHandlersAsync();
+    }
 
     else if (option == 0) break;
 
     else
     {
         Console.Clear();
-        Console.WriteLine("Invalid Input.");
+        Console.WriteLine("Invalid Input.\n");
     }
 }

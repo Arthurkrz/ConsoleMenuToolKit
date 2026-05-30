@@ -1,8 +1,8 @@
-﻿using ConsoleMenu.ManualTests.Contracts.Service;
+﻿using ConsoleMenu.ManualTests.Contracts.Service.Async;
 
-namespace ConsoleMenu.ManualTests.Services
+namespace ConsoleMenu.ManualTests.Services.Async
 {
-    public class AuditService : IAuditService
+    public class AuditServiceAsync : IAuditServiceAsync
     {
         public async Task RegisterAsync(string message)
         {

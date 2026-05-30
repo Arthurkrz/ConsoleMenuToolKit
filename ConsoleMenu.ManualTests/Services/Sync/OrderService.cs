@@ -1,6 +1,6 @@
-﻿using ConsoleMenu.ManualTests.Contracts.Service;
+﻿using ConsoleMenu.ManualTests.Contracts.Service.Sync;
 
-namespace ConsoleMenu.ManualTests.Services
+namespace ConsoleMenu.ManualTests.Services.Sync
 {
     public class OrderService : IOrderService
     {
@@ -11,9 +11,9 @@ namespace ConsoleMenu.ManualTests.Services
             _inventoryService = inventoryService;
         }
 
-        public async Task CreateOrderAsync()
+        public void CreateOrder()
         {
-            await _inventoryService.ReserveItemsAsync();
+            _inventoryService.ReserveItems();
             Console.WriteLine("Order successfully created.");
         }
     }

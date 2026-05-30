@@ -116,6 +116,12 @@ namespace ConsoleMenu.Application
             return this;
         }
 
+        public ConsoleMenuSetup AddReturnToMainOption(int id, string value)
+        {
+            _options.Add(ConsoleMenuOption.CreateReturnToMain(id, value));
+            return this;
+        }
+
         /// <summary>
         /// Adds an exit option to the console menu. This method is used to add an option 
         /// that, when selected, will signal the menu to exit. The option is added to the 
@@ -131,16 +137,32 @@ namespace ConsoleMenu.Application
             return this;
         }
         
-        internal async Task<ConsoleMenuExecutionResult> RunInternalAsync()
+        internal async Task<ConsoleMenuExecutionResult> RunInternalAsync(bool isMainMenu = false)
         {
             while (true)
             {
                 var selectedOption = _selector.ObtainOption(_options, _selectionType);
                 var result = await _executor.ExecuteAsync(selectedOption);
 
-                return result == ConsoleMenuExecutionResult.Return 
-                    ? ConsoleMenuExecutionResult.Continue 
-                    : result;
+                if (result == ConsoleMenuExecutionResult.Continue) continue;
+
+                if (result == ConsoleMenuExecutionResult.ReturnToMain && isMainMenu)
+                    continue;
+
+                return result switch
+                {
+                    ConsoleMenuExecutionResult.Return =>
+                        ConsoleMenuExecutionResult.Continue,
+
+                    ConsoleMenuExecutionResult.Exit =>
+                        result,
+
+                    ConsoleMenuExecutionResult.ReturnToMain =>
+                        ConsoleMenuExecutionResult.ReturnToMain,
+
+                    _ => throw new InvalidOperationException(
+                        $"Unsupported execution result: {result}")
+                };
             }
         }
 
@@ -156,6 +178,8 @@ namespace ConsoleMenu.Application
         /// The method works asynchronously by default, although its name does 
         /// not include "Async" for simplicity in usage.
         /// </summary>
-        public async Task Run() => await RunInternalAsync();
+        public void Run() => RunAsync().GetAwaiter().GetResult();
+
+        public async Task RunAsync() => await RunInternalAsync(isMainMenu: true);
     }
 }

@@ -5,11 +5,19 @@ namespace ConsoleMenu.Tests
     public class EntityTests
     {
         [Fact]
-        public void Create_ShouldThrowException_WhenInvalidId()
+        public void Create_ShouldThrowException_WhenNullAction()
         {
             // Act & Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                ConsoleMenuOption.Create(0, "Invalid", () => { }));
+            Assert.Throws<ArgumentNullException>(() =>
+                ConsoleMenuOption.Create(0, "Invalid", null!));
+        }
+
+        [Fact]
+        public void CreateAsync_ShouldThrowException_WhenNullAction()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() =>
+                ConsoleMenuOption.Create(0, "Invalid", null!));
         }
 
         [Fact]
@@ -18,6 +26,14 @@ namespace ConsoleMenu.Tests
             // Act & Assert
             Assert.Throws<ArgumentException>(() =>
                 ConsoleMenuOption.CreateWithHandler(1, "Test", ""));
+        }
+
+        [Fact]
+        public void CreateSubMenu_ShouldThrowException_WhenNullSubMenu()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() =>
+                ConsoleMenuOption.CreateSubMenu(0, "Invalid", null!));
         }
     }
 }

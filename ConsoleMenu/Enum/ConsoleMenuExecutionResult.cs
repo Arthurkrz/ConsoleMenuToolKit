@@ -15,11 +15,13 @@
 
         Return = 2,
 
+        ReturnToMain = 3,
+
         /// <summary>
         /// Indicates that the menu should be exited, 
         /// terminating the menu loop with the application 
         /// proceeding to any subsequent code after the menu execution.
         /// </summary>
-        Exit = 3
+        Exit = 4
     }
 }

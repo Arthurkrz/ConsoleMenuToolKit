@@ -1,8 +1,8 @@
-﻿using ConsoleMenu.ManualTests.Contracts.Service;
+﻿using ConsoleMenu.ManualTests.Contracts.Service.Async;
 
-namespace ConsoleMenu.ManualTests.Services
+namespace ConsoleMenu.ManualTests.Services.Async
 {
-    public class InventoryService : IInventoryService
+    public class InventoryServiceAsync : IInventoryServiceAsync
     {
         public async Task ReserveItemsAsync()
         {

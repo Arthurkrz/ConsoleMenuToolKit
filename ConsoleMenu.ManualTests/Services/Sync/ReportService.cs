@@ -1,6 +1,6 @@
-﻿using ConsoleMenu.ManualTests.Contracts.Service;
+﻿using ConsoleMenu.ManualTests.Contracts.Service.Sync;
 
-namespace ConsoleMenu.ManualTests.Services
+namespace ConsoleMenu.ManualTests.Services.Sync
 {
     public class ReportService : IReportService
     {
@@ -11,15 +11,15 @@ namespace ConsoleMenu.ManualTests.Services
             _auditService = auditService;
         }
 
-        public async Task GenerateDailyReportAsync()
+        public void GenerateDailyReport()
         {
-            await _auditService.RegisterAsync("Daily report requested.");
+            _auditService.Register("Daily report requested.");
             Console.WriteLine("Daily report generated.");
         }
 
-        public async Task GenerateReportForAllSpecialItemsAsync()
+        public void GenerateReportForAllSpecialItems()
         {
-            await _auditService.RegisterAsync("Report for all special items requested.");
+            _auditService.Register("Report for all special items requested.");
             Console.WriteLine("Report for all special items generated.");
         }
     }

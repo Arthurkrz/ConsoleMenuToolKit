@@ -43,95 +43,24 @@ namespace ConsoleMenu.Application
         /// <exception cref="InvalidOperationException"></exception>
         public ConsoleMenuOption ObtainOption(List<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(nameof(options), "No options provided.");
+            ValidateOptions(options);
 
-            ValidateDuplicateIds(options);
-
-            while (true)
-            {
-                var response = AskAndReadOption(selectionType, options);
-                var selectedOption = MapToConsoleInputOption(response, options);
-
-                if (selectedOption is not null)
-                {
-                    _console.Clear();
-                    _console.WriteLineColored($"\"{selectedOption.Value}\" selected\n", ConsoleColor.Cyan);
-                    return selectedOption;
-                }
-
-                _console.Clear();
-                _console.WriteLineColored($"\"{response}\" is not a valid option.\n", ConsoleColor.Red);
-                ShowOptions(options, selectionType);
-            }
+            return selectionType == ConsoleMenuSelectionType.ArrowSelection 
+                ? ObtainOptionByArrowSelection(options)
+                : ObtainOptionByInput(options, selectionType);
         }
 
-        private ConsoleMenuOption? MapToConsoleInputOption(string userInput, List<ConsoleMenuOption> options)
+        private ConsoleMenuOption ObtainOptionByInput(List<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType)
         {
-            if (!int.TryParse(userInput, out var inputAsNumber))
-                return null;
+            ShowOptions(options, selectionType);
+            var selectedOption = AskAndMapOption(selectionType, options);
 
-            return options.FirstOrDefault(x => x.Id == inputAsNumber);
+            _console.Clear();
+            _console.WriteLineColored($"\"{selectedOption.Value}\" selected.\n", ConsoleColor.Cyan);
+            return selectedOption;
         }
 
-        private string AskAndReadOption(ConsoleMenuSelectionType selectionType, List<ConsoleMenuOption> options)
-        {
-            _console.WriteLine("Select an option:");
-
-            return selectionType switch
-            {
-                ConsoleMenuSelectionType.InstantRead => ReadInstantly(),
-                ConsoleMenuSelectionType.ReadAfterConfirm => ReadAfterConfirm(),
-                ConsoleMenuSelectionType.ArrowSelection => ReadByArrowSelection(options),
-
-                _ => throw new NotSupportedException(
-                    $"Selection type '{selectionType}' is not supported.")
-            };
-        }
-
-        private void ShowOptions(List<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType, int? selectedIndex = 0)
-        {
-            if (selectionType == ConsoleMenuSelectionType.ArrowSelection)
-            {
-                _console.WriteLine("Use ↑/↓ to move and Enter to select:\n");
-
-                for (int i = 0; i < options.Count; i++)
-                {
-                    _console.ClearCurrentLine();
-
-                    var prefix = i == selectedIndex ? ">> " : "   ";
-                    _console.WriteLine($"{prefix}{options[i].Id} - {options[i].Value}");
-                }
-
-                return;
-            }
-
-            foreach (var option in options)
-                _console.WriteLine($"[{option.Id}] - {option.Value}");
-        }
-
-        private static void ValidateDuplicateIds(List<ConsoleMenuOption> options)
-        {
-            var duplicateIds = options
-                .GroupBy(x => x.Id)
-                .Where(g => g.Count() > 1)
-                .Select(g => g.Key)
-                .ToList();
-
-            if (duplicateIds.Any())
-                throw new InvalidOperationException($"Duplicate option IDs found: {string.Join(", ", duplicateIds)}");
-        }
-
-        private string ReadInstantly()
-        {
-            var key = _console.ReadKey();
-            _console.WriteLine("");
-            return key.KeyChar.ToString();
-        }
-
-        private string ReadAfterConfirm() =>
-            _console.ReadLine() ?? string.Empty;
-
-        private string ReadByArrowSelection(List<ConsoleMenuOption> options)
+        private ConsoleMenuOption ObtainOptionByArrowSelection(List<ConsoleMenuOption> options)
         {
             var selectedIndex = 0;
             var menuTop = _console.CursorTop;
@@ -152,15 +81,93 @@ namespace ConsoleMenu.Application
                         break;
 
                     case ConsoleKey.DownArrow:
-                        selectedIndex = selectedIndex ==
-                            options.Count - 1 ? 0
+                        selectedIndex = selectedIndex == options.Count - 1
+                            ? 0
                             : selectedIndex + 1;
                         break;
 
                     case ConsoleKey.Enter:
-                        return options[selectedIndex].Id.ToString();
+                        var selectedOption = options[selectedIndex];
+
+                        _console.Clear();
+                        _console.WriteLineColored($"\"{selectedOption.Value}\" selected.\n", ConsoleColor.Cyan);
+                        return selectedOption;
                 }
             }
+        }
+
+        private ConsoleMenuOption AskAndMapOption(ConsoleMenuSelectionType selectionType, List<ConsoleMenuOption> options)
+        {
+            while (true)
+            {
+                _console.WriteLine("\nSelect an option:");
+
+                var input = selectionType switch
+                {
+                    ConsoleMenuSelectionType.InstantRead => 
+                        _console.ReadKey().KeyChar.ToString(),
+
+                    ConsoleMenuSelectionType.ReadAfterConfirm => 
+                        _console.ReadLine() ?? string.Empty,
+
+                    _ => throw new NotSupportedException(
+                        $"Selection type '{selectionType}' is not supported.")
+                };
+
+                if (selectionType == ConsoleMenuSelectionType.InstantRead) _console.WriteLine("");
+
+                if (!int.TryParse(input, out var inputAsNumber))
+                {
+                    _console.Clear();
+                    _console.WriteLineColored($"\"{input}\" is not a valid option.\n", ConsoleColor.Red);
+                    ShowOptions(options, selectionType);
+                    continue;
+                }
+
+                var selectedOption = options.FirstOrDefault(x => x.Id == inputAsNumber);
+
+                if (selectedOption is not null) return selectedOption;
+
+                _console.Clear();
+                _console.WriteLineColored($"\"{input}\" is not a valid option.\n", ConsoleColor.Red);
+                ShowOptions(options, selectionType);
+            }
+        }
+
+        private void ShowOptions(List<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType, int selectedIndex = 0)
+        {
+            if (selectionType == ConsoleMenuSelectionType.ArrowSelection)
+            {
+                _console.WriteLine("Use ↑/↓ to move and Enter to select:\n");
+
+                for (int i = 0; i < options.Count; i++)
+                {
+                    _console.ClearCurrentLine();
+
+                    var prefix = i == selectedIndex ? ">> " : "   ";
+                    _console.WriteLine($"{prefix}{options[i].Id} - {options[i].Value}");
+                }
+
+                return;
+            }
+
+            foreach (var option in options) _console.WriteLine(
+                $"[{option.Id}] - {option.Value}");
+        }
+
+        private static void ValidateOptions(List<ConsoleMenuOption> options)
+        {
+            ArgumentNullException.ThrowIfNull(options, "Null option list.");
+            if (options.Count == 0) throw new InvalidOperationException("No options provided.");
+
+            var duplicateIds = options
+                .GroupBy(x => x.Id)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+
+            if (duplicateIds.Count != 0)
+                throw new InvalidOperationException($"Duplicate option IDs found: {string.Join(", ", duplicateIds)}");
         }
     }
 }

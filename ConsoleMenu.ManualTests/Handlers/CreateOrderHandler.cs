@@ -1,13 +1,13 @@
 ﻿using ConsoleMenu.Contracts;
-using ConsoleMenu.ManualTests.Contracts.Service;
+using ConsoleMenu.ManualTests.Contracts.Service.Async;
 
 namespace ConsoleMenu.ManualTests.Handlers
 {
     public class CreateOrderHandler : IConsoleMenuHandler
     {
-        private readonly IOrderService _orderService;
+        private readonly IOrderServiceAsync _orderService;
 
-        public CreateOrderHandler(IOrderService orderService)
+        public CreateOrderHandler(IOrderServiceAsync orderService)
         {
             _orderService = orderService;
         }

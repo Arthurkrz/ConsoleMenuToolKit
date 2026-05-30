@@ -13,7 +13,7 @@ namespace ConsoleMenu.Application
         private ConsoleMenuOption(int id, string value, ConsoleMenuOptionKind kind, Func<Task>? asyncAction = null, string? handlerKey = null, ConsoleMenuSetup? subMenu = null)
         {
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, "ID must be greater than zero.");
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(value, "Value cannot be empty.");
+            ArgumentException.ThrowIfNullOrWhiteSpace(value, "Value cannot be empty.");
 
             Id = id;
             Value = value;
@@ -100,7 +100,7 @@ namespace ConsoleMenu.Application
         /// <exception cref="ArgumentException"></exception>
         public static ConsoleMenuOption CreateWithHandler(int id, string value, string handlerKey)
         {
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(handlerKey, "Handler key cannot be empty.");
+            ArgumentException.ThrowIfNullOrWhiteSpace(handlerKey, "Handler key cannot be empty.");
 
             return new ConsoleMenuOption(id, value, ConsoleMenuOptionKind.Handler, null, handlerKey);
         }
@@ -114,6 +114,9 @@ namespace ConsoleMenu.Application
 
         public static ConsoleMenuOption CreateReturn(int id, string value) =>
             new ConsoleMenuOption(id, value, ConsoleMenuOptionKind.Return);
+
+        public static ConsoleMenuOption CreateReturnToMain(int id, string value) =>
+            new ConsoleMenuOption(id, value, ConsoleMenuOptionKind.ReturnToMain);
 
         /// <summary>
         /// Creates an exit option, setting the kind to Exit and leaving action and handlerKey as null.

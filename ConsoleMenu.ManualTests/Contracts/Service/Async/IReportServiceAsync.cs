@@ -1,6 +1,6 @@
-﻿namespace ConsoleMenu.ManualTests.Contracts.Service
+﻿namespace ConsoleMenu.ManualTests.Contracts.Service.Async
 {
-    public interface IReportService
+    public interface IReportServiceAsync
     {
         Task GenerateDailyReportAsync();
 

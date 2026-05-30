@@ -12,10 +12,16 @@ namespace ConsoleMenu.Tests.Utilities
         {
             ExecutionCount++;
 
-            var result = option.Kind == 
-                ConsoleMenuOptionKind.Exit ?
-                ConsoleMenuExecutionResult.Exit :
-                ConsoleMenuExecutionResult.Continue;
+            var result = option.Kind switch
+            {
+                ConsoleMenuOptionKind.Exit => ConsoleMenuExecutionResult.Exit,
+
+                ConsoleMenuOptionKind.Return => ConsoleMenuExecutionResult.Return,
+
+                ConsoleMenuOptionKind.ReturnToMain => ConsoleMenuExecutionResult.ReturnToMain,
+
+                _ => ConsoleMenuExecutionResult.Continue
+            };
 
             return Task.FromResult(result);
         }

@@ -22,10 +22,12 @@
 
         Return = 4,
 
+        ReturnToMain = 5,
+
         /// <summary>
         /// Console menu option that signals the menu 
         /// to exit when selected, terminating the menu loop.
         /// </summary>
-        Exit = 5
+        Exit = 6
     }
 }

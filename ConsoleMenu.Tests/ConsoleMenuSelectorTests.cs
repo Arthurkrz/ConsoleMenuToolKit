@@ -22,8 +22,8 @@ namespace ConsoleMenu.Tests
 
             var options = new List<ConsoleMenuOption>
             {
-                ConsoleMenuOption.Create(1, "Option 1", () => { }),
-                ConsoleMenuOption.Create(2, "Option 2", () => { })
+                ConsoleMenuOption.Create(1, "Test", () => { }),
+                ConsoleMenuOption.Create(2, "Test", () => { })
             };
 
             // Act
@@ -41,8 +41,8 @@ namespace ConsoleMenu.Tests
 
             var options = new List<ConsoleMenuOption>
             {
-                ConsoleMenuOption.Create(1, "Option 1", () => { }),
-                ConsoleMenuOption.Create(10, "Option 10", () => { })
+                ConsoleMenuOption.Create(1, "Test", () => { }),
+                ConsoleMenuOption.Create(10, "Test", () => { })
             };
 
             // Act
@@ -51,7 +51,7 @@ namespace ConsoleMenu.Tests
 
             // Assert
             Assert.Equal(10, result.Id);
-            Assert.Equal("Option 10", result.Value);
+            Assert.Equal("Test", result.Value);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace ConsoleMenu.Tests
             _console.EnqueueKey('1');
 
             var options = new List<ConsoleMenuOption>
-                { ConsoleMenuOption.Create(1, "Option 1", () => { }) };
+                { ConsoleMenuOption.Create(1, "Test", () => { }) };
 
             // Act
             var result = _sut.ObtainOption(options, 
@@ -70,7 +70,7 @@ namespace ConsoleMenu.Tests
 
             // Assert
             Assert.Equal(1, result.Id);
-            Assert.Equal("Option 1", result.Value);
+            Assert.Equal("Test", result.Value);
             Assert.Contains(_console.ColoredLines, x => x.Color == ConsoleColor.Red);
         }
 
@@ -82,7 +82,7 @@ namespace ConsoleMenu.Tests
             _console.EnqueueLine("1");
 
             var options = new List<ConsoleMenuOption>
-                { ConsoleMenuOption.Create(1, "Option 1", () => {}) };
+                { ConsoleMenuOption.Create(1, "Test", () => {}) };
 
             // Act
             var result = _sut.ObtainOption(options, 
@@ -90,8 +90,112 @@ namespace ConsoleMenu.Tests
 
             // Assert
             Assert.Equal(1, result.Id);
-            Assert.Equal("Option 1", result.Value);
+            Assert.Equal("Test", result.Value);
             Assert.Contains(_console.ColoredLines, x => x.Color == ConsoleColor.Red);
+        }
+
+        [Fact]
+        public void ObtainOption_ShouldReturnFirstOption_WhenEnterPressedWithArrowSelection()
+        {
+            // Arrange
+            _console.EnqueueKey((char)ConsoleKey.Enter);
+
+            var options = new List<ConsoleMenuOption>
+            {
+                ConsoleMenuOption.Create(1, "Test", () => { }),
+                ConsoleMenuOption.Create(2, "Test", () => { })
+            };
+
+            // Act
+            var result = _sut.ObtainOption(options, ConsoleMenuSelectionType.ArrowSelection);
+
+            // Assert
+            Assert.Equal(1, result.Id);
+        }
+
+        [Fact]
+        public void ObtainOption_ShouldMoveDown_WhenDownArrowPressedWithArrowSelection()
+        {
+            // Arrange
+            _console.EnqueueKey((char)ConsoleKey.DownArrow);
+            _console.EnqueueKey((char)ConsoleKey.Enter);
+
+            var options = new List<ConsoleMenuOption>
+            {
+                ConsoleMenuOption.Create(1, "Test", () => { }),
+                ConsoleMenuOption.Create(2, "Test", () => { })
+            };
+
+            // Act
+            var result = _sut.ObtainOption(options, ConsoleMenuSelectionType.ArrowSelection);
+
+            // Assert
+            Assert.Equal(2, result.Id);
+        }
+
+        [Fact]
+        public void ObtainOption_ShouldMoveUp_WhenUpArrowPressedWithArrowSelection()
+        {
+            // Arrange
+            _console.EnqueueKey((char)ConsoleKey.DownArrow);
+            _console.EnqueueKey((char)ConsoleKey.DownArrow);
+            _console.EnqueueKey((char)ConsoleKey.UpArrow);
+            _console.EnqueueKey((char)ConsoleKey.Enter);
+
+            var options = new List<ConsoleMenuOption>
+            {
+                ConsoleMenuOption.Create(1, "Test", () => { }),
+                ConsoleMenuOption.Create(2, "Test", () => { }),
+                ConsoleMenuOption.Create(3, "Test", () => { })
+            };
+
+            // Act
+            var result = _sut.ObtainOption(options, ConsoleMenuSelectionType.ArrowSelection);
+
+            // Assert
+            Assert.Equal(2, result.Id);
+        }
+
+        [Fact]
+        public void ObtainOption_ShouldWrapToLastOption_WhenUpArrowPressedOnFirstOptionWithArrowSelection()
+        {
+            // Arrange
+            _console.EnqueueKey((char)ConsoleKey.UpArrow);
+            _console.EnqueueKey((char)ConsoleKey.Enter);
+
+            var options = new List<ConsoleMenuOption>
+            {
+                ConsoleMenuOption.Create(1, "Test", () => { }),
+                ConsoleMenuOption.Create(2, "Test", () => { }),
+                ConsoleMenuOption.Create(3, "Test", () => { })
+            };
+
+            // Act
+            var result = _sut.ObtainOption(options, ConsoleMenuSelectionType.ArrowSelection);
+
+            // Assert
+            Assert.Equal(3, result.Id);
+        }
+
+        [Fact]
+        public void ObtainOption_ShouldWrapToFirstOption_WhenDownArrowPressedOnLastOptionWithArrowSelection()
+        {
+            // Arrange
+            _console.EnqueueKey((char)ConsoleKey.DownArrow);
+            _console.EnqueueKey((char)ConsoleKey.DownArrow);
+            _console.EnqueueKey((char)ConsoleKey.Enter);
+
+            var options = new List<ConsoleMenuOption>
+            {
+                ConsoleMenuOption.Create(1, "Test", () => { }),
+                ConsoleMenuOption.Create(2, "Test", () => { })
+            };
+
+            // Act
+            var result = _sut.ObtainOption(options, ConsoleMenuSelectionType.ArrowSelection);
+
+            // Assert
+            Assert.Equal(1, result.Id);
         }
 
         [Fact]
@@ -108,8 +212,8 @@ namespace ConsoleMenu.Tests
             // Arrange
             var options = new List<ConsoleMenuOption>
             {
-                ConsoleMenuOption.Create(1, "Option 1", () => { }),
-                ConsoleMenuOption.Create(1, "Option 2", () => { })
+                ConsoleMenuOption.Create(1, "Test", () => { }),
+                ConsoleMenuOption.Create(1, "Test", () => { })
             };
 
             // Act & Assert

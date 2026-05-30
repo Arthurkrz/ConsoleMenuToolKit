@@ -1,6 +1,6 @@
-﻿namespace ConsoleMenu.ManualTests.Contracts.Service
+﻿namespace ConsoleMenu.ManualTests.Contracts.Service.Async
 {
-    public interface ISpecialOrderService
+    public interface ISpecialOrderServiceAsync
     {
         Task CreateOrderAllProductsAsync();
 

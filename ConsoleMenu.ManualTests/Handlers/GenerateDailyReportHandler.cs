@@ -1,13 +1,13 @@
 ﻿using ConsoleMenu.Contracts;
-using ConsoleMenu.ManualTests.Contracts.Service;
+using ConsoleMenu.ManualTests.Contracts.Service.Async;
 
 namespace ConsoleMenu.ManualTests.Handlers
 {
     public class GenerateDailyReportHandler : IConsoleMenuHandler
     {
-        private readonly IReportService _reportService;
+        private readonly IReportServiceAsync _reportService;
 
-        public GenerateDailyReportHandler(IReportService reportService)
+        public GenerateDailyReportHandler(IReportServiceAsync reportService)
         {
             _reportService = reportService;
         }

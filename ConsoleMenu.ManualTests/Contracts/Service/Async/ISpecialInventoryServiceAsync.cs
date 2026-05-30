@@ -1,6 +1,6 @@
-﻿namespace ConsoleMenu.ManualTests.Contracts.Service
+﻿namespace ConsoleMenu.ManualTests.Contracts.Service.Async
 {
-    public interface ISpecialInventoryService
+    public interface ISpecialInventoryServiceAsync
     {
         Task ReserveAllSpecialItemsAsync();
 
