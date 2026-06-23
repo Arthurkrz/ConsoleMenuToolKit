@@ -2,7 +2,9 @@
 {
     /// <summary>
     /// Represents the result of a menu option, indicating 
-    /// whether to continue displaying the menu or exit it.
+    /// whether to continue displaying the menu, return 
+    /// to a previous sub-menu, return to
+    /// the main menu or exit it.
     /// </summary>
     public enum ConsoleMenuExecutionResult
     {
@@ -13,8 +15,16 @@
         /// </summary>
         Continue = 1,
 
+        /// <summary>
+        /// Indicates that the menu should return 
+        /// to the previous sub-menu.
+        /// </summary>
         Return = 2,
 
+        /// <summary>
+        /// Indicates that the menu should 
+        /// return to the main menu.
+        /// </summary>
         ReturnToMain = 3,
 
         /// <summary>

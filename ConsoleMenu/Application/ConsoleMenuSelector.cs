@@ -21,7 +21,7 @@ namespace ConsoleMenu.Application
         /// writing output. The IConsoleWrapper abstraction enables flexibility in how console 
         /// interactions are implemented, allowing for custom behavior or testing without relying on direct console calls.
         /// </summary>
-        /// <param name="console"></param>
+        /// <param name="console">ConsoleWrapper instance to perform console operations.</param>
         public ConsoleMenuSelector(IConsoleMenuWrapper console)
         {
             _console = console;
@@ -37,10 +37,9 @@ namespace ConsoleMenu.Application
         /// the corresponding ConsoleMenuOption is returned. If the input is invalid, 
         /// an error message is displayed, and the options are shown again until a valid selection is made.
         /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
+        /// <param name="options">List of options provided by the user.</param>
+        /// <param name="selectionType">Defines how the user should select the options.</param>
+        /// <returns>The ConsoleMenuOption instance associated with the chosen option.</returns>
         public ConsoleMenuOption ObtainOption(List<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType)
         {
             ValidateOptions(options);

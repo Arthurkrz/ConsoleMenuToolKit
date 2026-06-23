@@ -17,8 +17,9 @@ namespace ConsoleMenu.Contracts
         /// If the user input is invalid (e.g., not a number or not matching any option ID), 
         /// it should prompt the user to try again until a valid option is selected.
         /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
+        /// <param name="options">List of available options provided by the user.</param>
+        /// <param name="selectionType">Defines how the user should select the options.</param>
+        /// <returns>The ConsoleMenuOption instance associated with the chosen option.</returns>
         ConsoleMenuOption ObtainOption(List<ConsoleMenuOption> options, ConsoleMenuSelectionType selectionType);
     }
 }

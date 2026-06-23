@@ -26,7 +26,7 @@ namespace ConsoleMenu.Application
         /// </summary>
         public ConsoleMenuSetup(ConsoleMenuSelectionType selectionType = ConsoleMenuSelectionType.ReadAfterConfirm) 
             : this(new ConsoleMenuSelector(new ConsoleMenuWrapper()), 
-                   new ConsoleMenuExecutor([], new ConsoleMenuWrapper())) { _selectionType = selectionType; }
+                   new ConsoleMenuExecutor([], [], new ConsoleMenuWrapper())) { _selectionType = selectionType; }
 
         /// <summary>
         /// Constructor for ConsoleMenuSetup that allows for dependency injection 
@@ -107,6 +107,12 @@ namespace ConsoleMenu.Application
         public ConsoleMenuSetup AddSubMenuOption(int id, string value, ConsoleMenuSetup subMenu)
         {
             _options.Add(ConsoleMenuOption.CreateSubMenu(id, value, subMenu));
+            return this;
+        }
+
+        public ConsoleMenuSetup AddSubMenuOptionWithKey(int id, string value, string subMenuKey)
+        {
+            _options.Add(ConsoleMenuOption.CreateSubMenuWithKey(id, value, subMenuKey));
             return this;
         }
 

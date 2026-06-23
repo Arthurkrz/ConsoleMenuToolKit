@@ -13,7 +13,7 @@ namespace ConsoleMenu.Tests
             var option = ConsoleMenuOption.Create(1, "Test", () => { });
             var exit = ConsoleMenuOption.CreateExit(5, "Test");
 
-            var selector = new FakeSelector(new[] { option, option, exit });
+            var selector = new FakeSelector([option, option, exit]);
             var executor = new FakeExecutor();
 
             var sut = new ConsoleMenuSetup(selector, executor);
@@ -33,7 +33,7 @@ namespace ConsoleMenu.Tests
             // Arrange
             var returnOption = ConsoleMenuOption.CreateReturn(1, "Test");
 
-            var selector = new FakeSelector(new[] { returnOption });
+            var selector = new FakeSelector([returnOption]);
             var executor = new FakeExecutor();
 
             // Act
@@ -52,7 +52,7 @@ namespace ConsoleMenu.Tests
             // Arrange
             var returnToMain = ConsoleMenuOption.CreateReturnToMain(1, "Test");
 
-            var selector = new FakeSelector(new[] { returnToMain });
+            var selector = new FakeSelector([returnToMain]);
             var executor = new FakeExecutor();
 
             // Act
@@ -72,7 +72,7 @@ namespace ConsoleMenu.Tests
             var returnToMain = ConsoleMenuOption.CreateReturnToMain(1, "Test");
             var exit = ConsoleMenuOption.CreateExit(2, "Test");
 
-            var selector = new FakeSelector(new[] { returnToMain, exit });
+            var selector = new FakeSelector([returnToMain, exit]);
             var executor = new FakeExecutor();
 
             // Act
@@ -93,7 +93,7 @@ namespace ConsoleMenu.Tests
             // Arrange
             var exit = ConsoleMenuOption.CreateExit(1, "Test");
 
-            var selector = new FakeSelector(new[] { exit });
+            var selector = new FakeSelector([exit]);
             var executor = new FakeExecutor();
 
             // Act

@@ -8,7 +8,7 @@ namespace ConsoleMenu.Tests
 {
     public class ConsoleMenuExecutorTests
     {
-        private ConsoleMenuExecutor _sut = new(Array.Empty<IConsoleMenuHandler>(), new FakeWrapper());
+        private ConsoleMenuExecutor _sut = new([], [], new FakeWrapper());
 
         [Fact]
         public async Task ExecuteAsync_ShouldRunAction_WithNormalCreate()
@@ -49,7 +49,7 @@ namespace ConsoleMenu.Tests
         {
             // Arrange
             var handler = new FakeHandler("Test");
-            _sut = new ConsoleMenuExecutor(new[] { handler }, new FakeWrapper());
+            _sut = new ConsoleMenuExecutor([handler], [], new FakeWrapper());
 
             var option = ConsoleMenuOption.CreateWithHandler(1, "Test", "Test");
 
@@ -59,6 +59,31 @@ namespace ConsoleMenu.Tests
             // Assert
             Assert.True(handler.IsExecuted);
             Assert.Equal(ConsoleMenuExecutionResult.Continue, result);
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_ShouldRunSubMenu_WhenSubMenuKeyExists()
+        {
+            // Arrange
+            var exit = ConsoleMenuOption.CreateExit(1, "Test");
+
+            var selector = new FakeSelector([exit]);
+            var executor = new FakeExecutor();
+
+            var subMenu = new ConsoleMenuSetup(selector, executor)
+                .AddExitOption(1, "Test");
+
+            var subMenus = new[] { new FakeSubMenu("Test", subMenu) };
+
+            var sut = new ConsoleMenuExecutor([], subMenus, new FakeWrapper());
+
+            var option = ConsoleMenuOption.CreateSubMenuWithKey(1, "Test", "Test");
+
+            // Act
+            var results = await sut.ExecuteAsync(option);
+
+            // Assert
+            Assert.Equal(ConsoleMenuExecutionResult.Exit, results);
         }
 
         [Fact]
@@ -93,7 +118,7 @@ namespace ConsoleMenu.Tests
             // Arrange
             var exit = ConsoleMenuOption.CreateExit(1, "Test");
 
-            var selector = new FakeSelector(new[] { exit });
+            var selector = new FakeSelector([exit]);
             var executor = new FakeExecutor();
 
             var subMenu = new ConsoleMenuSetup(selector, executor)
@@ -114,7 +139,7 @@ namespace ConsoleMenu.Tests
             // Arrange
             var returnToMain = ConsoleMenuOption.CreateReturnToMain(1, "Test");
 
-            var selector = new FakeSelector(new[] { returnToMain });
+            var selector = new FakeSelector([returnToMain]);
             var executor = new FakeExecutor();
 
             var subMenu = new ConsoleMenuSetup(selector, executor)
@@ -143,7 +168,7 @@ namespace ConsoleMenu.Tests
         }
 
         [Fact]
-        public void ExecuteAsync_ShouldThrowException_WhenDuplicateHandlers()
+        public void ConsoleMenuExecutorConstruction_ShouldThrowException_WhenDuplicateHandlers()
         {
             // Arrange
             var handlers = new[]
@@ -154,11 +179,26 @@ namespace ConsoleMenu.Tests
 
             // Act & Assert
             Assert.Throws<InvalidOperationException>(() =>
-                new ConsoleMenuExecutor(handlers, new FakeWrapper()));
+                new ConsoleMenuExecutor(handlers, [], new FakeWrapper()));
         }
 
         [Fact]
-        public void ExecuteAsync_ShouldThrowException_WhenDIInjectsDuplicateHandlers()
+        public void ConsoleMenuExecutorConstruction_ShouldThrowException_WhenDuplicateSubMenus()
+        {
+            // Arrange
+            var subMenus = new[]
+            {
+                new FakeSubMenu("Test"),
+                new FakeSubMenu("Test")
+            };
+
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() =>
+                new ConsoleMenuExecutor([], subMenus, new FakeWrapper()));
+        }
+
+        [Fact]
+        public void ConsoleMenuExecutorConstruction_ShouldThrowException_WhenDIInjectsDuplicateHandlers()
         {
             // Arrange
             var services = new ServiceCollection();
@@ -171,19 +211,42 @@ namespace ConsoleMenu.Tests
             var provider = services.BuildServiceProvider();
 
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() =>
-                provider.GetRequiredService<IConsoleMenuExecutor>());
+            Assert.Throws<InvalidOperationException>(
+                provider.GetRequiredService<IConsoleMenuExecutor>);
         }
 
         [Fact]
-        public async Task ExecuteAsync_ShouldThrowException_WhenHandlerNotFound()
+        public void ConsoleMenuExecutorConstruction_ShouldThrowException_WhenDIInjectsDuplicateSubMenus()
         {
             // Arrange
-            var option = ConsoleMenuOption.CreateWithHandler(1, "Test", "Test");
+            var services = new ServiceCollection();
+
+            services.AddSingleton<IConsoleMenuSubMenu>(new FakeSubMenu("Test"));
+            services.AddSingleton<IConsoleMenuSubMenu>(new FakeSubMenu("Test"));
+
+            services.AddSingleton<IConsoleMenuWrapper, FakeWrapper>();
+
+            var provider = services.BuildServiceProvider();
 
             // Act & Assert
+            Assert.Throws<InvalidOperationException>(
+                provider.GetRequiredService<IConsoleMenuExecutor>);
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_ShouldThrowException_WhenHandlerKeyNotFound()
+        {
+            // Act & Assert
             await Assert.ThrowsAsync<InvalidOperationException>(() => 
-                _sut.ExecuteAsync(option));
+                _sut.ExecuteAsync(ConsoleMenuOption.CreateWithHandler(1, "Test", "Test")));
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_ShouldThrowException_WhenSubMenuKeyNotFound()
+        {
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                _sut.ExecuteAsync(ConsoleMenuOption.CreateSubMenuWithKey(1, "Test", "Test")));
         }
     }
 }

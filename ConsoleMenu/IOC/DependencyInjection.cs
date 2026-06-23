@@ -12,8 +12,8 @@ namespace ConsoleMenu.IOC
         /// <summary>
         /// Adds the necessary services for the console menu to the service collection.
         /// </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
+        /// <param name="services">Necessary parameter for dependency injection.</param>
+        /// <returns>Returns itself, allowing for chained calls.</returns>
         public static IServiceCollection AddConsoleMenu(this IServiceCollection services)
         {
             services.AddSingleton<IConsoleMenuWrapper, ConsoleMenuWrapper>();

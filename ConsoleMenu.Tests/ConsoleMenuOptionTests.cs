@@ -2,7 +2,7 @@
 
 namespace ConsoleMenu.Tests
 {
-    public class EntityTests
+    public class ConsoleMenuOptionTests
     {
         [Fact]
         public void Create_ShouldThrowException_WhenNullAction()
@@ -34,6 +34,14 @@ namespace ConsoleMenu.Tests
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
                 ConsoleMenuOption.CreateSubMenu(0, "Invalid", null!));
+        }
+
+        [Fact]
+        public void CreateSubMenuWithKey_ShouldThrowException_WhenEmptyKey()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentException>(() =>
+                ConsoleMenuOption.CreateSubMenuWithKey(1, "Test", ""));
         }
     }
 }

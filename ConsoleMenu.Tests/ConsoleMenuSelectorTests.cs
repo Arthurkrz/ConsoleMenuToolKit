@@ -203,7 +203,7 @@ namespace ConsoleMenu.Tests
         {
             // Act & Assert
             Assert.Throws<InvalidOperationException>(() => 
-                _sut.ObtainOption(new List<ConsoleMenuOption>(), ConsoleMenuSelectionType.InstantRead));
+                _sut.ObtainOption([], ConsoleMenuSelectionType.InstantRead));
         }
 
         [Fact]
