@@ -2,7 +2,7 @@
 using ConsoleMenu.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ConsoleMenu.IOC
+namespace ConsoleMenu.DependencyInjection
 {
     /// <summary>
     /// Dependency Injection class for complex configuration.

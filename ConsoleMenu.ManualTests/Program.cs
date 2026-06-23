@@ -1,4 +1,4 @@
-﻿using ConsoleMenu.IOC;
+﻿using ConsoleMenu.DependencyInjection;
 using ConsoleMenu.ManualTests;
 using ConsoleMenu.ManualTests.IOC;
 using Microsoft.Extensions.DependencyInjection;

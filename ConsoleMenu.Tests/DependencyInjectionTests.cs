@@ -1,7 +1,7 @@
 ﻿using ConsoleMenu.Application;
 using ConsoleMenu.Contracts;
+using ConsoleMenu.DependencyInjection;
 using ConsoleMenu.Enum;
-using ConsoleMenu.IOC;
 using ConsoleMenu.Tests.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 

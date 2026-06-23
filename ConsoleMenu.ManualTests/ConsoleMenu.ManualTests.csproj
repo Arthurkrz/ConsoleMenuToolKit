@@ -9,10 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleMenu.DependencyInjection\ConsoleMenu.DependencyInjection.csproj" />
     <ProjectReference Include="..\ConsoleMenu\ConsoleMenu.csproj" />
   </ItemGroup>
 
