@@ -197,7 +197,7 @@ subMenuElectronics
     .AddExitOption(4, "Exit");
 
 menu
-    .AddHandlerOption(2, "Generate daily reports all products", "reports-all")
+    .AddHandlerOption(2, "Generate daily reports for all products", "reports-all")
     .AddSubMenuOption(3, "Generate daily reports for electronics", subMenuElectronics)
     .AddExitOption(4, "Exit");
 
@@ -213,7 +213,7 @@ Main Menu
 
 **Note**: Direct submenus must be created from the deepest level upward because the submenu instance is required when configuring the parent menu.
 
-For larger applications, this approach becomes confusing and hard to maintain. For this reason, you can attach a **Key** to each nested menu, similarly to handler options. This way, menus can be created at any order and not necessarily in the same class.
+For larger applications, this approach becomes confusing and hard to maintain. For this reason, you can attach a **Key** to each nested menu, similarly to handler options. This way, menus can be created at any order and not necessarily in the same class. However, they must have an IServiceProvider instance injected and resolve dependencies in the `Build()` method.
 
 ```csharp
 menu.AddSubMenuOptionWithKey(
@@ -223,11 +223,16 @@ menu.AddSubMenuOptionWithKey(
 
 public class ElectronicsSubMenu : IConsoleMenuSubMenu
 {
+    private readonly IServiceProvider _serviceProvider;
+
     public string Key => "sub-all-electronics";
 
     public ConsoleMenuSetup Build()
     {
-        return new ConsoleMenuSetup()
+        var selector = _serviceProvider.GetRequiredService<IConsoleMenuSelector>();
+        var executor = _serviceProvider.GetRequiredService<IConsoleMenuExecutor>();
+
+        return new ConsoleMenuSetup(selector, executor)
             .AddHandlerOption(1, "Reports for all electronics", "reports-all-electronics")
 
             .AddSubMenuOptionWithKey(2, 
